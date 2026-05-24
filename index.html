@@ -309,10 +309,10 @@
 
             .stream-viewport {
                 height: auto;
-                overflow: hidden;
+                max-height: 120px;
             }
 
-            /* Yatay akan şerit */
+            /* Yatay şerit: elle kaydır + JS ile sağdan sola yavaş akış */
             .stream-column--left .stream-viewport,
             .stream-column--right .stream-viewport,
             .left-sidebar .stream-viewport,
@@ -1377,5 +1377,91 @@
             </div>
         </aside>
     </div>
+    <script>
+    (function () {
+        const mobileMq = window.matchMedia('(max-width: 768px)');
+        const reduceMotionMq = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+        function getViewports() {
+            return document.querySelectorAll(
+                '.stream-column--left .stream-viewport, .stream-column--right .stream-viewport'
+            );
+        }
+
+        function startStripDrift(viewport) {
+            const track = viewport.querySelector('.stream-track');
+            if (!track) return function () {};
+
+            let paused = false;
+            let resumeTimer = null;
+            let rafId = 0;
+            const speed = 0.35;
+
+            function loopHalf() {
+                return track.scrollWidth / 2;
+            }
+
+            function tick() {
+                if (mobileMq.matches && !reduceMotionMq.matches && !paused) {
+                    viewport.scrollLeft += speed;
+                    const half = loopHalf();
+                    if (half > 0 && viewport.scrollLeft >= half - 1) {
+                        viewport.scrollLeft -= half;
+                    }
+                }
+                rafId = requestAnimationFrame(tick);
+            }
+
+            function pause() {
+                paused = true;
+                if (resumeTimer) clearTimeout(resumeTimer);
+            }
+
+            function resumeLater() {
+                if (resumeTimer) clearTimeout(resumeTimer);
+                resumeTimer = setTimeout(function () {
+                    paused = false;
+                }, 2000);
+            }
+
+            viewport.addEventListener('touchstart', pause, { passive: true });
+            viewport.addEventListener('touchend', resumeLater, { passive: true });
+            viewport.addEventListener('touchcancel', resumeLater, { passive: true });
+            viewport.addEventListener('mousedown', pause);
+            viewport.addEventListener('mouseup', resumeLater);
+            viewport.addEventListener('mouseleave', resumeLater);
+            viewport.addEventListener('wheel', function () {
+                pause();
+                resumeLater();
+            }, { passive: true });
+
+            rafId = requestAnimationFrame(tick);
+
+            return function () {
+                cancelAnimationFrame(rafId);
+                if (resumeTimer) clearTimeout(resumeTimer);
+            };
+        }
+
+        const cleanups = [];
+
+        function init() {
+            cleanups.forEach(function (fn) { fn(); });
+            cleanups.length = 0;
+            if (!mobileMq.matches || reduceMotionMq.matches) return;
+            getViewports().forEach(function (vp) {
+                cleanups.push(startStripDrift(vp));
+            });
+        }
+
+        mobileMq.addEventListener('change', init);
+        reduceMotionMq.addEventListener('change', init);
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    })();
+    </script>
 </body>
 </html>
