@@ -16,6 +16,20 @@
 
         :root {
             --cursor-m: url('m-cursor.svg') 16 24, auto;
+            --bg-dark: #121212;
+            --paper: #FFFFFF;
+            --ink: #1A1A1A;
+            --ink-soft: #292929;
+            --muted: #6B6B6B;
+            --stream-name: #E5E5E5;
+            --stream-bio: #888888;
+            --whatsapp: #128C7E;
+            --whatsapp-deep: #0B6B5F;
+            --center-width: 680px;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         html,
@@ -27,28 +41,109 @@
         }
 
         body {
-            background-color: #FFFFFF;
-            color: #1A1A1A;
-            /* Medium'un kendi font hiyerarşisi */
+            background: var(--bg-dark);
+            color: var(--ink);
             font-family: "source-serif-pro", Georgia, Cambria, "Times New Roman", Times, serif;
-            font-size: 20px; /* Okuma kolaylığı için ideal Medium boyutu */
+            font-size: 20px;
             line-height: 1.6;
             letter-spacing: -0.003em;
             -webkit-font-smoothing: antialiased;
-            display: flex;
-            justify-content: center;
-            padding: 100px 24px;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        .container {
-            max-width: 680px; /* Metin yayılımını engelleyen kritik sınır */
+        .layout {
+            display: flex;
+            align-items: stretch;
+            justify-content: center;
+            min-height: 100vh;
             width: 100%;
+        }
+
+        /* Side streams */
+        .stream-column {
+            flex: 1 1 0;
+            min-width: 0;
+            background: var(--bg-dark);
+            overflow: hidden;
+            position: relative;
+            mask-image: linear-gradient(to bottom, transparent 0%, #000 8%, #000 92%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 8%, #000 92%, transparent 100%);
+        }
+
+        .stream-viewport {
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .stream-track {
+            display: flex;
+            flex-direction: column;
+            gap: 72px;
+            padding: 40px 32px 120px;
+            will-change: transform;
+        }
+
+        .stream-column--left .stream-track {
+            animation: marquee-down 180s linear infinite;
+        }
+
+        .stream-column--right .stream-track {
+            animation: marquee-up 200s linear infinite;
+            animation-delay: -90s;
+        }
+
+        @keyframes marquee-down {
+            from { transform: translateY(0); }
+            to { transform: translateY(-50%); }
+        }
+
+        @keyframes marquee-up {
+            from { transform: translateY(-50%); }
+            to { transform: translateY(0); }
+        }
+
+        .stream-card {
+            max-width: 280px;
+            margin: 0 auto;
+        }
+
+        .stream-name {
+            font-family: 'Inter', system-ui, sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--stream-name);
+            line-height: 1.35;
+            margin-bottom: 8px;
+        }
+
+        .stream-bio {
+            font-family: 'Lora', Georgia, serif;
+            font-size: 12px;
+            font-style: italic;
+            color: var(--stream-bio);
+            line-height: 1.55;
+        }
+
+        /* Center paper column */
+        .center-column {
+            flex: 0 0 var(--center-width);
+            width: var(--center-width);
+            max-width: var(--center-width);
+            background: var(--paper);
+            min-height: 100vh;
+            padding: 100px 40px 120px;
+            box-shadow:
+                0 0 0 1px rgba(255, 255, 255, 0.04),
+                0 24px 80px rgba(0, 0, 0, 0.45);
+            position: relative;
+            z-index: 2;
         }
 
         .top-meta {
             font-family: 'Inter', system-ui, sans-serif;
             font-size: 13px;
-            color: #6B6B6B;
+            color: var(--muted);
             text-transform: uppercase;
             letter-spacing: 0.08em;
             margin-bottom: 40px;
@@ -57,36 +152,36 @@
 
         h1 {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            font-size: 42px; /* Başlık daha vurucu ve büyük olmalı */
+            font-size: 42px;
             line-height: 1.15;
             font-weight: 700;
             letter-spacing: -0.02em;
-            color: #1A1A1A;
+            color: var(--ink);
             margin-bottom: 32px;
         }
 
         .divider {
             text-align: center;
             font-size: 28px;
-            color: #292929;
+            color: var(--ink-soft);
             margin: 40px 0;
             letter-spacing: 0.6em;
             opacity: 0.3;
         }
 
         blockquote {
-            border-left: 3px solid #1A1A1A;
+            border-left: 3px solid var(--ink);
             padding-left: 24px;
             margin: 40px 0;
             font-style: italic;
             font-size: 22px;
-            color: #1A1A1A;
+            color: var(--ink);
             line-height: 1.5;
         }
 
         p {
             margin-bottom: 28px;
-            color: #292929;
+            color: var(--ink-soft);
             word-break: break-word;
         }
 
@@ -99,7 +194,7 @@
 
         .cta-button {
             display: inline-block;
-            background-color: #1A1A1A;
+            background-color: var(--ink);
             color: #FFFFFF;
             font-family: 'Inter', system-ui, sans-serif;
             font-size: 16px;
@@ -107,79 +202,1074 @@
             text-decoration: none;
             padding: 14px 32px;
             border-radius: 99px;
-            transition: background-color 0.15s ease;
+            transition: all 0.3s ease;
             margin-bottom: 16px;
             letter-spacing: -0.01em;
+            border: 2px solid transparent;
         }
 
-        .cta-button:hover {
-            background-color: #000000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        .cta-button:hover,
+        .cta-button:focus-visible {
+            background-color: var(--whatsapp);
+            color: #FFFFFF;
+            border-color: rgba(37, 211, 102, 0.35);
+            box-shadow: 0 0 28px rgba(18, 140, 126, 0.45), 0 8px 24px rgba(0, 0, 0, 0.12);
+            transform: translateY(-1px);
         }
 
         .cta-button:active {
-            background-color: #FFFFFF;
-            color: #1A1A1A;
-            box-shadow: inset 0 0 0 2px #1A1A1A;
+            background-color: var(--whatsapp-deep);
+            color: #FFFFFF;
+            box-shadow: 0 0 16px rgba(18, 140, 126, 0.35);
             transform: scale(0.98);
         }
 
         .cta-button:focus-visible {
-            outline: 2px solid #1A1A1A;
-            outline-offset: 3px;
+            outline: none;
         }
 
         .cta-subtext {
             font-family: 'Inter', system-ui, sans-serif;
             font-size: 14px;
-            color: #6B6B6B;
+            color: var(--muted);
             line-height: 1.5;
         }
 
-        /* Mobil Optimizasyon */
-        @media (max-width: 768px) {
-            body {
-                padding: 50px 20px;
+        @media (max-width: 1200px) {
+            .stream-column {
+                display: none;
             }
+
+            .layout {
+                display: block;
+            }
+
+            .center-column {
+                width: 100%;
+                max-width: var(--center-width);
+                margin: 0 auto;
+                box-shadow: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .center-column {
+                padding: 50px 20px 80px;
+            }
+
             h1 {
                 font-size: 32px;
             }
+
             blockquote {
                 font-size: 20px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .stream-track {
+                animation: none !important;
             }
         }
     </style>
 </head>
 <body>
-
-    <div class="container">
-        <div class="top-meta">Sınırları Çizilmiş Bir Davet • Topluluk Köprüsü</div>
-        
-        <h1>Zamanla, akışı derinlikten geçen bir bağ kurmak adına.</h1>
-        
-        <div class="divider">•••</div>
-        
-        <blockquote>
-            “İnsan, insanın sığınağıdır.” – Kurt Aland
-        </blockquote>
-        
-        <p>
-            Buradan entelektüel, derin ve organik bir topluluk filizlenebilir. Bu grup, ilk etapta doğrudan herkesin rastgele konuşabildiği bir açık pazar haline gelmeyecek. Saygıyı ve derinliği korumak adına başlangıçta mesajlaşma kapalı tutulacaktır. 
-        </p>
-        
-        <p>
-            Amacımızın sadece "tanışmak ve temas etmek" olması size küçük veya değersiz görünmesin. Hayatta bazen bilinçli bir seçicilik gerekir. Siz bu seçiciliği ne kadar kurgularsanız kurgulayın, o gerçek bağ sizi bazen rastgele bir şiirde, bazen de bir Medium yazısının satır arasında bulur.
-        </p>
-
-        <div class="cta-section">
-            <a href="https://chat.whatsapp.com/BXmUHGnPH5wFBvpvpMx9NF" class="cta-button" target="_blank" rel="noopener noreferrer">
-                WhatsApp Topluluğuna Katıl
-            </a>
-            <div class="cta-subtext">
-                Bağlantı doğrudan WhatsApp uygulamasına yönlendirir.<br>Seçici ve derin bir topluluğun ilk adımı.
+    <div class="layout">
+        <aside class="stream-column stream-column--left" aria-hidden="true">
+            <div class="stream-viewport">
+                <div class="stream-track">
+                    <div class="stream-set">
+          <article class="stream-card">
+            <h3 class="stream-name">Rana Irfan</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">AliAyhan.</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Zeynep Tara Şafak</h3>
+            <p class="stream-bio">Teoride şehir plancısı pratikte ne iş varsa onu yapan dümdüz TC vatandaşı</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Bir Kadının Çığlığı</h3>
+            <p class="stream-bio">✨ &quot;Karanlıktan aydınlığa yürüyen bir yolculuğun içindeyim. Psikoloji, farkındalık ve yaşamdan derslerle; hem kendime hem başkalarına güç vermek için yazıyorum.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Kaanhan</h3>
+            <p class="stream-bio">Deneyimle yoğrulmuş yazılar, psikoloji ve kişisel gelişimle harmanlanmış hikâyeler. Samimi, düşündüren ve insana dokunan bir ses.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Emel Ö.</h3>
+            <p class="stream-bio">Yazmak, yaşadıklarını ikinci kez yaşamak gibidir; ama bu kez onları anlamak için.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Gürşan Aydın Kocabaş</h3>
+            <p class="stream-bio">Zamanın ötesinde bir hissiyatla yaşayan,kalbi ve ruhunu kelimelerle ,şiirlerle buluşturan bir yolcuyum 💫</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">İncinur Öztürk</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Adnan Söylemez</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Kursad Tufan</h3>
+            <p class="stream-bio">meraklı..</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Hilal Sarı</h3>
+            <p class="stream-bio">Hayatın küçük detaylarında saklı büyük anlamları keşfetmeyi seviyorum. 🐝</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Kahraman Murat</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Burcu K.</h3>
+            <p class="stream-bio">Kendi kendine konuşana deli diyorlardı, ben de yazmaya karar verdim. Kendi kendime konuşurken belki satır aralarında denk düşeriz… Belki de düşmeyiz. Kim bilir?</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Aysen Çeliktaş</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Sena Atakosker</h3>
+            <p class="stream-bio">Computer Engineer | Java Developer | AI &amp; ML Enthusiast</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Gringo Yiğit</h3>
+            <p class="stream-bio">Dobra dobra yazarım isteyen okur istemeyen okumaz. Ha şunu da bilin bu blog hesabı Dünyada ki en başarılı blog hesabıdır admini de benim.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Hülya Yücel Ergün</h3>
+            <p class="stream-bio">Ses Söz Arpacık</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Seçkin</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Merve Nur Topak</h3>
+            <p class="stream-bio">Podcast host at @degisimeinanpodcast</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Ö𝐦𝐞𝐫 𝐅𝐚𝐫𝐮𝐤 𝐁ü𝐲ü𝐤</h3>
+            <p class="stream-bio">Marmara Law ⚖️ | Climate Activist 🌍 | #goal13</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Mehmet Kilinc</h3>
+            <p class="stream-bio">Öğretim Üyesi, Ziraat Fakültesi, Faculty of Agriculture, İnsan, Kendini Bilme, İyilik, İyi İnsanOlma!, Anlam Araryışı</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Mehmetylm</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Özgür Sakarya</h3>
+            <p class="stream-bio">40 sene kadar önce doğdum. Henüz ölmedim.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Enise Nur AKGÜN</h3>
+            <p class="stream-bio">Hi there! 😊 Check out all my writings and social media in one place 👇 https://linktr.ee/enisenurakgun</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Hadise</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Evren Soyuçok</h3>
+            <p class="stream-bio">Blog yazarı, editör</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Kübra</h3>
+            <p class="stream-bio">24, computer engineering</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Büşra</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">İbrahim</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Nil Gürel</h3>
+            <p class="stream-bio">Tüm yazılarım ve çeşitli paylaşımlarım için: nilgurel.blogspot.com</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Hanifiyikilmaz</h3>
+            <p class="stream-bio">Yazmak, hayatla konuşma biçimim. Edebiyat, insan ruhunun kıvrımları… Gözlemlerimi, hislerimi ve düşündürdüklerini Medium sayfamda bir araya getiriyorum.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Gamze🍀</h3>
+            <p class="stream-bio">Ancora imparò • ♪♪</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Furkan Kaya</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Bünyamin Ali</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Sena Ünal</h3>
+            <p class="stream-bio">Bendeniz anlam mefhumuna vurgun bir münzevi. Herkese pay edilen hoşnutsuzluktan nasibini almış, biraz sizden biraz ondan birazcık da bundan biri.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Erdoğan Aldemir, Ph.D.</h3>
+            <p class="stream-bio">Türkçe | English... Tıbbi görüntüleme doktora, çok da fotoğraf ve yazı | PhD on medical imaging, keen on writing and photography. aldemir.erdogan@hotmail.com</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Muhammet Halit Cifci</h3>
+            <p class="stream-bio">Financial Analyst | Writer</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">M. Harun Akdaş</h3>
+            <p class="stream-bio">Korku hikayelerim arasında gezerken dikkat edin. Aralarında tekinsiz şeyler dolaşıyor. www.mhakdas.com</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">suheyl sadikli</h3>
+            <p class="stream-bio">💬yaşamak, türkiye blues, aşk, kahve, 82 yazı, yağmur önce sonraları, bershka indirimleri, kedi, gramer, atmosfer basıncı, kadıköy ve bunun gibi şeyler</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Yasemin Yiğit Kuru</h3>
+            <p class="stream-bio">Hello! I'm an engineer who is devoted to exploring every moment of life. Connect me via: https://linktr.ee/yaseminyigitk</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Barancan Sönmez</h3>
+            <p class="stream-bio">I love math, transistors and science fiction. https://barancan-sonmez.owlstown.net/</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Deniz Dağlı</h3>
+            <p class="stream-bio">Data Scientist | Python Tutor</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Seçil Andaç</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Göçebe Biri</h3>
+            <p class="stream-bio">Gökyüzünde bir martı, sürüsünden kovulmuş... 🎈</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Aynur Biber</h3>
+            <p class="stream-bio">Zamanın ruhuna alaycı bir bakış atan,şimdilik kalemine dans ettiren sözün değil niyetin gücüne inanan en çok da söyleyemedikleriyle kendini anlatan bir yazan</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Halit Yılmazer</h3>
+            <p class="stream-bio">Eğitimci, yazar ve editör. Hayatın farklı alanlarından gözlemler, deneyimler ve araştırmalarımı paylaşıyorum. Eğitim, kültür, kişisel gelişim, gündelik yaşam..</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Selim</h3>
+            <p class="stream-bio">Çevirmen, öğretmen, yatırımcı, berbat yazar, dil-edebiyat mezunu. Felsefe. Kişisel Gelişim. Sosyoloji. Yatırım. Din. Tasavvuf. Psikoloji. Mindfullness.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Şaban Ulutaş</h3>
+            <p class="stream-bio">Senior Software Engineer ||| Refactor the life ||| Less is more ||| Great things never came from Comfort Zones</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Harika Selin</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Kübra Pektaş, PhD</h3>
+            <p class="stream-bio">Turizm öğrencisi. Sosyal bilimler, emek, umut ve akademik mücadele üzerine yazıyorum.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">bal bocegi</h3>
+            <p class="stream-bio">Yazmayı, keşfetmeyi seven ve bu ikisini güzelce harmanlayan birisi..</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Reyhan Kaptanoğlu</h3>
+            <p class="stream-bio">A soul that breathes through poetry, a writer who entrusts their inner world to words. I don't express my feelings in silence, but through verses.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Ferhan Gökçek</h3>
+            <p class="stream-bio">A soul on its journey.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Aylin Bulur</h3>
+            <p class="stream-bio">&quot;Bazen rüzgârın taşıdığı bir koku, bazen bir satır… Hepsi bir hikâyeye dönüşüyor: substack.com/@aylinbulur&quot;</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Salih CAN</h3>
+            <p class="stream-bio">&quot;Bir kelime bazen bir ağacı büyütür, bazen bir toplumu değiştirir. Ben, ikisi için de yazıyorum.&quot; ins: officialsalihcan</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Mehmet Ali Gumus</h3>
+            <p class="stream-bio">overseas..</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Büşra Çınar</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Hilal Güngör</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Samet ÖZTÜRK</h3>
+            <p class="stream-bio">Ardahan'lı Türk yazar, besteci ve Acemi Sanat Yönetmeni</p>
+          </article>
+                    </div>
+                    <div class="stream-set" aria-hidden="true">
+          <article class="stream-card">
+            <h3 class="stream-name">Rana Irfan</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">AliAyhan.</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Zeynep Tara Şafak</h3>
+            <p class="stream-bio">Teoride şehir plancısı pratikte ne iş varsa onu yapan dümdüz TC vatandaşı</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Bir Kadının Çığlığı</h3>
+            <p class="stream-bio">✨ &quot;Karanlıktan aydınlığa yürüyen bir yolculuğun içindeyim. Psikoloji, farkındalık ve yaşamdan derslerle; hem kendime hem başkalarına güç vermek için yazıyorum.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Kaanhan</h3>
+            <p class="stream-bio">Deneyimle yoğrulmuş yazılar, psikoloji ve kişisel gelişimle harmanlanmış hikâyeler. Samimi, düşündüren ve insana dokunan bir ses.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Emel Ö.</h3>
+            <p class="stream-bio">Yazmak, yaşadıklarını ikinci kez yaşamak gibidir; ama bu kez onları anlamak için.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Gürşan Aydın Kocabaş</h3>
+            <p class="stream-bio">Zamanın ötesinde bir hissiyatla yaşayan,kalbi ve ruhunu kelimelerle ,şiirlerle buluşturan bir yolcuyum 💫</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">İncinur Öztürk</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Adnan Söylemez</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Kursad Tufan</h3>
+            <p class="stream-bio">meraklı..</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Hilal Sarı</h3>
+            <p class="stream-bio">Hayatın küçük detaylarında saklı büyük anlamları keşfetmeyi seviyorum. 🐝</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Kahraman Murat</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Burcu K.</h3>
+            <p class="stream-bio">Kendi kendine konuşana deli diyorlardı, ben de yazmaya karar verdim. Kendi kendime konuşurken belki satır aralarında denk düşeriz… Belki de düşmeyiz. Kim bilir?</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Aysen Çeliktaş</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Sena Atakosker</h3>
+            <p class="stream-bio">Computer Engineer | Java Developer | AI &amp; ML Enthusiast</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Gringo Yiğit</h3>
+            <p class="stream-bio">Dobra dobra yazarım isteyen okur istemeyen okumaz. Ha şunu da bilin bu blog hesabı Dünyada ki en başarılı blog hesabıdır admini de benim.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Hülya Yücel Ergün</h3>
+            <p class="stream-bio">Ses Söz Arpacık</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Seçkin</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Merve Nur Topak</h3>
+            <p class="stream-bio">Podcast host at @degisimeinanpodcast</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Ö𝐦𝐞𝐫 𝐅𝐚𝐫𝐮𝐤 𝐁ü𝐲ü𝐤</h3>
+            <p class="stream-bio">Marmara Law ⚖️ | Climate Activist 🌍 | #goal13</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Mehmet Kilinc</h3>
+            <p class="stream-bio">Öğretim Üyesi, Ziraat Fakültesi, Faculty of Agriculture, İnsan, Kendini Bilme, İyilik, İyi İnsanOlma!, Anlam Araryışı</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Mehmetylm</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Özgür Sakarya</h3>
+            <p class="stream-bio">40 sene kadar önce doğdum. Henüz ölmedim.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Enise Nur AKGÜN</h3>
+            <p class="stream-bio">Hi there! 😊 Check out all my writings and social media in one place 👇 https://linktr.ee/enisenurakgun</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Hadise</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Evren Soyuçok</h3>
+            <p class="stream-bio">Blog yazarı, editör</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Kübra</h3>
+            <p class="stream-bio">24, computer engineering</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Büşra</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">İbrahim</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Nil Gürel</h3>
+            <p class="stream-bio">Tüm yazılarım ve çeşitli paylaşımlarım için: nilgurel.blogspot.com</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Hanifiyikilmaz</h3>
+            <p class="stream-bio">Yazmak, hayatla konuşma biçimim. Edebiyat, insan ruhunun kıvrımları… Gözlemlerimi, hislerimi ve düşündürdüklerini Medium sayfamda bir araya getiriyorum.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Gamze🍀</h3>
+            <p class="stream-bio">Ancora imparò • ♪♪</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Furkan Kaya</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Bünyamin Ali</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Sena Ünal</h3>
+            <p class="stream-bio">Bendeniz anlam mefhumuna vurgun bir münzevi. Herkese pay edilen hoşnutsuzluktan nasibini almış, biraz sizden biraz ondan birazcık da bundan biri.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Erdoğan Aldemir, Ph.D.</h3>
+            <p class="stream-bio">Türkçe | English... Tıbbi görüntüleme doktora, çok da fotoğraf ve yazı | PhD on medical imaging, keen on writing and photography. aldemir.erdogan@hotmail.com</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Muhammet Halit Cifci</h3>
+            <p class="stream-bio">Financial Analyst | Writer</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">M. Harun Akdaş</h3>
+            <p class="stream-bio">Korku hikayelerim arasında gezerken dikkat edin. Aralarında tekinsiz şeyler dolaşıyor. www.mhakdas.com</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">suheyl sadikli</h3>
+            <p class="stream-bio">💬yaşamak, türkiye blues, aşk, kahve, 82 yazı, yağmur önce sonraları, bershka indirimleri, kedi, gramer, atmosfer basıncı, kadıköy ve bunun gibi şeyler</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Yasemin Yiğit Kuru</h3>
+            <p class="stream-bio">Hello! I'm an engineer who is devoted to exploring every moment of life. Connect me via: https://linktr.ee/yaseminyigitk</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Barancan Sönmez</h3>
+            <p class="stream-bio">I love math, transistors and science fiction. https://barancan-sonmez.owlstown.net/</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Deniz Dağlı</h3>
+            <p class="stream-bio">Data Scientist | Python Tutor</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Seçil Andaç</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Göçebe Biri</h3>
+            <p class="stream-bio">Gökyüzünde bir martı, sürüsünden kovulmuş... 🎈</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Aynur Biber</h3>
+            <p class="stream-bio">Zamanın ruhuna alaycı bir bakış atan,şimdilik kalemine dans ettiren sözün değil niyetin gücüne inanan en çok da söyleyemedikleriyle kendini anlatan bir yazan</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Halit Yılmazer</h3>
+            <p class="stream-bio">Eğitimci, yazar ve editör. Hayatın farklı alanlarından gözlemler, deneyimler ve araştırmalarımı paylaşıyorum. Eğitim, kültür, kişisel gelişim, gündelik yaşam..</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Selim</h3>
+            <p class="stream-bio">Çevirmen, öğretmen, yatırımcı, berbat yazar, dil-edebiyat mezunu. Felsefe. Kişisel Gelişim. Sosyoloji. Yatırım. Din. Tasavvuf. Psikoloji. Mindfullness.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Şaban Ulutaş</h3>
+            <p class="stream-bio">Senior Software Engineer ||| Refactor the life ||| Less is more ||| Great things never came from Comfort Zones</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Harika Selin</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Kübra Pektaş, PhD</h3>
+            <p class="stream-bio">Turizm öğrencisi. Sosyal bilimler, emek, umut ve akademik mücadele üzerine yazıyorum.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">bal bocegi</h3>
+            <p class="stream-bio">Yazmayı, keşfetmeyi seven ve bu ikisini güzelce harmanlayan birisi..</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Reyhan Kaptanoğlu</h3>
+            <p class="stream-bio">A soul that breathes through poetry, a writer who entrusts their inner world to words. I don't express my feelings in silence, but through verses.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Ferhan Gökçek</h3>
+            <p class="stream-bio">A soul on its journey.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Aylin Bulur</h3>
+            <p class="stream-bio">&quot;Bazen rüzgârın taşıdığı bir koku, bazen bir satır… Hepsi bir hikâyeye dönüşüyor: substack.com/@aylinbulur&quot;</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Salih CAN</h3>
+            <p class="stream-bio">&quot;Bir kelime bazen bir ağacı büyütür, bazen bir toplumu değiştirir. Ben, ikisi için de yazıyorum.&quot; ins: officialsalihcan</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Mehmet Ali Gumus</h3>
+            <p class="stream-bio">overseas..</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Büşra Çınar</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Hilal Güngör</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Samet ÖZTÜRK</h3>
+            <p class="stream-bio">Ardahan'lı Türk yazar, besteci ve Acemi Sanat Yönetmeni</p>
+          </article>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
+        </aside>
 
+        <main class="center-column">
+            <div class="top-meta">Sınırları Çizilmiş Bir Davet • Topluluk Köprüsü</div>
+
+            <h1>Zamanla, akışı derinlikten geçen bir bağ kurmak adına.</h1>
+
+            <div class="divider">•••</div>
+
+            <blockquote>
+                “İnsan, insanın sığınağıdır.” – Kurt Aland
+            </blockquote>
+
+            <p>
+                Buradan entelektüel, derin ve organik bir topluluk filizlenebilir. Bu grup, ilk etapta doğrudan herkesin rastgele konuşabildiği bir açık pazar haline gelmeyecek. Saygıyı ve derinliği korumak adına başlangıçta mesajlaşma kapalı tutulacaktır.
+            </p>
+
+            <p>
+                Amacımızın sadece "tanışmak ve temas etmek" olması size küçük veya değersiz görünmesin. Hayatta bazen bilinçli bir seçicilik gerekir. Siz bu seçiciliği ne kadar kurgularsanız kurgulayın, o gerçek bağ sizi bazen rastgele bir şiirde, bazen de bir Medium yazısının satır arasında bulur.
+            </p>
+
+            <div class="cta-section">
+                <a href="https://chat.whatsapp.com/BXmUHGnPH5wFBvpvpMx9NF" class="cta-button" target="_blank" rel="noopener noreferrer">
+                    WhatsApp Topluluğuna Katıl
+                </a>
+                <div class="cta-subtext">
+                    Bağlantı doğrudan WhatsApp uygulamasına yönlendirir.<br>
+                    Seçici ve derin bir topluluğun ilk adımı.
+                </div>
+            </div>
+        </main>
+
+        <aside class="stream-column stream-column--right" aria-hidden="true">
+            <div class="stream-viewport">
+                <div class="stream-track">
+                    <div class="stream-set">
+          <article class="stream-card">
+            <h3 class="stream-name">Sinem Demirkan</h3>
+            <p class="stream-bio">A writer on a journey to find their voice. If you're searching yourself too, maybe you'll find a reflection of yourself in my words.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Pınar</h3>
+            <p class="stream-bio">Görmek ve düşünmek üzerine</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">İndigo Nehirler</h3>
+            <p class="stream-bio">XI 🪽 Amatör Yazar, Dans Aşığı</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">pinaricka</h3>
+            <p class="stream-bio">Ekonomiden, siyasetten, geçmiş yaşam travmalarından, astrolojiden sıkıldıysan hele bir oku soluklan yeğenim pinarilhan84@hotmail.com</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Sevgiyeltekin</h3>
+            <p class="stream-bio">Zihnin gizemlerini keşfederken, duygularımı ve psikolojik gözlemlerimi paylaşıyorum.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Selim Can Fırat</h3>
+            <p class="stream-bio">Çok yeniyim burda… Yazılarım genellikle hayalini kurduğum ve yaşadığım olayların farklı paralelde yaşam bulmuş hayaliyle ortaya çıkar.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Tuğba Güner</h3>
+            <p class="stream-bio">içerik Yazarı / İçerik Editörü/ Çocuk kitabı yazarı</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Elçin</h3>
+            <p class="stream-bio">dünya bir karambol ve kimseye çarpmadan yürümeye çalışmaktansa kollarımı daha da açarak herkesi devirmeyi tercih ediyorum</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Derya💫</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Firatocal</h3>
+            <p class="stream-bio">I want to breathe a fresh air into your life with comments that will make you smile and think.Come on take a quiet and refreshing break and join me on myjourney</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Mürsel Aydın</h3>
+            <p class="stream-bio">Hayat, depresyona girmek, ağlamak, üzülmek, kendini küçük görmek, kızmak, kötü kitaplar okumak ve boş insanlarla vakit geçirmek için fazlasıyla kısa.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">doğan güneş</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Du 💫</h3>
+            <p class="stream-bio">Kural ne bilmiyorum</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Gülhan</h3>
+            <p class="stream-bio">&quot;Ama önce sen kendini inşa etmelisin, dimdik bir beden ve dimdik bir ruhla.&quot;</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Ümran A.</h3>
+            <p class="stream-bio">English Literature graduate | UX/UI design enthusiast | Book &amp; film reviewer | Lover of art, stories, and thoughtful design.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Ömer S.</h3>
+            <p class="stream-bio">Okumak, başkasının zihninde dolaşmaktır. instagram.com/o.mrst</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Hakikatin Fedaisi</h3>
+            <p class="stream-bio">Ben sonradan bazı önemli gerçeklerin farkına varmış ve bunları başka insanlarla da paylaşmak isteyen biriyim</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Mücahit Muhammet Karakuş</h3>
+            <p class="stream-bio">İşi gücü HESAP KİTAP olan yalnız bir okuryazar. Her hafta yalnızca bir hikâye, bir kitap ya da bir yazar.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Hilal Kahraman</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Sena YÜKSEL</h3>
+            <p class="stream-bio">Computer Engineer | Focused on Deep Learning &amp; Computer Vision. https://www.kaggle.com/senayuksel https://github.com/senayukseel</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Gökhan Y.</h3>
+            <p class="stream-bio">Founder of MediumTurkiye.com linktr.ee/mediumturkiye Worldwide Business Traveller, PMP, Farm Designer and Serial Entrepreneur</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Gamze Gacaloglu</h3>
+            <p class="stream-bio">Learning Experience Designer, Project Manager. Curious about life, expressing herself beter by writing...</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Kemal Aslan</h3>
+            <p class="stream-bio">Yazdıklarımız sessiz ve kadim bir ritüeldir. Yazmak düşünceleri sağmaktır. Okumak ise insanca bir eylem... İletişim için: kmlaslnua@gmail.com</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Murat Yaman</h3>
+            <p class="stream-bio">💫 Storyteller for Business &amp; Life ✨ Perfumer</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Ali</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Hacer Kayalı</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Dişinde Ruj Var Ophelia</h3>
+            <p class="stream-bio">Minik öğrencileriyle hayal kurar, yaşlı insanları keyifle dinler, çiçeklerle ve kuşlarla sohbet eder, köpeklerle gülümser. Çocuk kalpli bir İngilizce öğretmeni</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">GülHAN</h3>
+            <p class="stream-bio">Kendi dünyamda yaşadıklarımı yazıya dökmeyi seviyorum .Geriye dönüp okuduğum zaman kim olduğumu unutmamayı da.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Servet Ses</h3>
+            <p class="stream-bio">actor, author, molecular biologist</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Bahadır Kaygısız</h3>
+            <p class="stream-bio">Psikoloji, felsefe, kişisel gelişim. Kendi yolumda ilerlerken gördüklerimi, düşüncelerimi ve tespitlerimi yazıyorum. Hesaplarım: https://bahadirin.com</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Yalnıızca Senem</h3>
+            <p class="stream-bio">Varoluşun Ağırlığını Taşıyor ve Yazıyorum..Biraz Birazım 'Her Şey'den..İç Monologlar, Sorgulamalar.Değişiyor, Kayboluyor ve Şekilleniyorum. Ben, Yalnızca Senem.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Esmanur İçli</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Oğuzhan Civcir</h3>
+            <p class="stream-bio">Meraklı bir mühendisin kaleminden: Basit hayat, yoğun anlamlar.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Hacer Talak</h3>
+            <p class="stream-bio">Psikoloji | Edebiyat | Felsefe | Eğitim</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Ferhat Sercan</h3>
+            <p class="stream-bio">Bildiklerimi, yaşadıklarımı ve öğrendiklerimi paylaşıyorum. Neverfap Akademi Ex-Team Lead YetGen23'2 #üretkenlik #productivity https://linktr.ee/ferhatsercan</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Hatice Nur Özcan</h3>
+            <p class="stream-bio">Ama gözler kör, yüreği ile bakmalı insan.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Bahadır Özerdem</h3>
+            <p class="stream-bio">Gerçek bilinir hakikat ise aranır.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Melisa Tekkıran</h3>
+            <p class="stream-bio">Her şey ben yaşarken oldu, bunu bilsin insanlar ben yaşarken koptu tufan ben yaşarken yeni baştan yaratıldı kainat her şeyi gördüm içim rahat.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Gonca Menteşe</h3>
+            <p class="stream-bio">Yazmak yeniden bakmaktır hayata... İletişim kurmak isterseniz: goncamentese@hotmail.com instagram: gonca.mentese</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Erol Seçilmiş</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Furkan Keçeli</h3>
+            <p class="stream-bio">Hayatın Derinliklerine Dalın (Dive into Life's Depths…)</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Beril Bingöllü</h3>
+            <p class="stream-bio">kendi iç sesimi yazıya döküyorum; belki senin sustuklarını da anlatıyordur.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Betül Aşık Işık</h3>
+            <p class="stream-bio">Psychotherapist | I write about what I see, read and listen to. Big fan of existential philosophy. https://www.instagram.com/psk.dan.betulasik/</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Nihan Aslan</h3>
+            <p class="stream-bio">Okur, yazmaya çalışır.. İnstagram/ @nihinkitapdunyasi</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Aleyna</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Gizem Algac</h3>
+            <p class="stream-bio">İlişkiler, gözlem, içsel keşif ve dijital dönüşüm: Hayatın yazıya dökülen halleri. 🌸</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Yuled Sancaktutar</h3>
+            <p class="stream-bio">Substack: https://yuledsancaktutar.substack.com Youtube: https://www.youtube.com/@BirYankı</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Pınar Akkan</h3>
+            <p class="stream-bio">English Teacher in Love with Writing🤍</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Kardelen</h3>
+            <p class="stream-bio">yazıyorum çünkü bazı şeyler anlatıldıkça hafifliyor. içten düşünceler, ilişkiler, sevgi, iyileşme ve hayat üzerine notlar.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Omer Ali Bas</h3>
+            <p class="stream-bio">amatör karalamalar.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Mürşide</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Esra Kuru</h3>
+            <p class="stream-bio">Violinist | Activist | Human Rights Defender - Colors are my second language.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Fatma Çavuş</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">biyeregitsek</h3>
+            <p class="stream-bio">Seyahat Blog | Istanbul, Türkiye 🇹🇷 | Dünya🌍 | Seyahat | Farklı Lezzetler | Tasarım ve Mimari ✍🏻 medium.com/biyeregitsek 📧 biyeregitsek@gmail.com</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Deniz</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Bengu Kisa</h3>
+            <p class="stream-bio">Toplumsal dinamikler ve kültürel dokular üzerine eleştirel analizler. Sosyolog</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Tuba Çerçi</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Nuri Sencer</h3>
+            <p class="stream-bio">Zamanın dar geldiği çağda, kelimelerle nefes alıyor. Yazdıklarım susamadığım için, bazen de unutmamak için. Her satırda kendimi arıyor, biraz da seni buluyorum.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">İnci Çilsal</h3>
+            <p class="stream-bio">Hayata dair gördüklerim ve hissettiklerim şiirlerle yazılarla belki sana da dokunur, kim bilir ✨ Yazarak ve çizerek nefes alan bir amatör. — İnci Çilsal.</p>
+          </article>
+                    </div>
+                    <div class="stream-set" aria-hidden="true">
+          <article class="stream-card">
+            <h3 class="stream-name">Sinem Demirkan</h3>
+            <p class="stream-bio">A writer on a journey to find their voice. If you're searching yourself too, maybe you'll find a reflection of yourself in my words.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Pınar</h3>
+            <p class="stream-bio">Görmek ve düşünmek üzerine</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">İndigo Nehirler</h3>
+            <p class="stream-bio">XI 🪽 Amatör Yazar, Dans Aşığı</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">pinaricka</h3>
+            <p class="stream-bio">Ekonomiden, siyasetten, geçmiş yaşam travmalarından, astrolojiden sıkıldıysan hele bir oku soluklan yeğenim pinarilhan84@hotmail.com</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Sevgiyeltekin</h3>
+            <p class="stream-bio">Zihnin gizemlerini keşfederken, duygularımı ve psikolojik gözlemlerimi paylaşıyorum.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Selim Can Fırat</h3>
+            <p class="stream-bio">Çok yeniyim burda… Yazılarım genellikle hayalini kurduğum ve yaşadığım olayların farklı paralelde yaşam bulmuş hayaliyle ortaya çıkar.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Tuğba Güner</h3>
+            <p class="stream-bio">içerik Yazarı / İçerik Editörü/ Çocuk kitabı yazarı</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Elçin</h3>
+            <p class="stream-bio">dünya bir karambol ve kimseye çarpmadan yürümeye çalışmaktansa kollarımı daha da açarak herkesi devirmeyi tercih ediyorum</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Derya💫</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Firatocal</h3>
+            <p class="stream-bio">I want to breathe a fresh air into your life with comments that will make you smile and think.Come on take a quiet and refreshing break and join me on myjourney</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Mürsel Aydın</h3>
+            <p class="stream-bio">Hayat, depresyona girmek, ağlamak, üzülmek, kendini küçük görmek, kızmak, kötü kitaplar okumak ve boş insanlarla vakit geçirmek için fazlasıyla kısa.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">doğan güneş</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Du 💫</h3>
+            <p class="stream-bio">Kural ne bilmiyorum</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Gülhan</h3>
+            <p class="stream-bio">&quot;Ama önce sen kendini inşa etmelisin, dimdik bir beden ve dimdik bir ruhla.&quot;</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Ümran A.</h3>
+            <p class="stream-bio">English Literature graduate | UX/UI design enthusiast | Book &amp; film reviewer | Lover of art, stories, and thoughtful design.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Ömer S.</h3>
+            <p class="stream-bio">Okumak, başkasının zihninde dolaşmaktır. instagram.com/o.mrst</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Hakikatin Fedaisi</h3>
+            <p class="stream-bio">Ben sonradan bazı önemli gerçeklerin farkına varmış ve bunları başka insanlarla da paylaşmak isteyen biriyim</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Mücahit Muhammet Karakuş</h3>
+            <p class="stream-bio">İşi gücü HESAP KİTAP olan yalnız bir okuryazar. Her hafta yalnızca bir hikâye, bir kitap ya da bir yazar.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Hilal Kahraman</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Sena YÜKSEL</h3>
+            <p class="stream-bio">Computer Engineer | Focused on Deep Learning &amp; Computer Vision. https://www.kaggle.com/senayuksel https://github.com/senayukseel</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Gökhan Y.</h3>
+            <p class="stream-bio">Founder of MediumTurkiye.com linktr.ee/mediumturkiye Worldwide Business Traveller, PMP, Farm Designer and Serial Entrepreneur</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Gamze Gacaloglu</h3>
+            <p class="stream-bio">Learning Experience Designer, Project Manager. Curious about life, expressing herself beter by writing...</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Kemal Aslan</h3>
+            <p class="stream-bio">Yazdıklarımız sessiz ve kadim bir ritüeldir. Yazmak düşünceleri sağmaktır. Okumak ise insanca bir eylem... İletişim için: kmlaslnua@gmail.com</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Murat Yaman</h3>
+            <p class="stream-bio">💫 Storyteller for Business &amp; Life ✨ Perfumer</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Ali</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Hacer Kayalı</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Dişinde Ruj Var Ophelia</h3>
+            <p class="stream-bio">Minik öğrencileriyle hayal kurar, yaşlı insanları keyifle dinler, çiçeklerle ve kuşlarla sohbet eder, köpeklerle gülümser. Çocuk kalpli bir İngilizce öğretmeni</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">GülHAN</h3>
+            <p class="stream-bio">Kendi dünyamda yaşadıklarımı yazıya dökmeyi seviyorum .Geriye dönüp okuduğum zaman kim olduğumu unutmamayı da.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Servet Ses</h3>
+            <p class="stream-bio">actor, author, molecular biologist</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Bahadır Kaygısız</h3>
+            <p class="stream-bio">Psikoloji, felsefe, kişisel gelişim. Kendi yolumda ilerlerken gördüklerimi, düşüncelerimi ve tespitlerimi yazıyorum. Hesaplarım: https://bahadirin.com</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Yalnıızca Senem</h3>
+            <p class="stream-bio">Varoluşun Ağırlığını Taşıyor ve Yazıyorum..Biraz Birazım 'Her Şey'den..İç Monologlar, Sorgulamalar.Değişiyor, Kayboluyor ve Şekilleniyorum. Ben, Yalnızca Senem.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Esmanur İçli</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Oğuzhan Civcir</h3>
+            <p class="stream-bio">Meraklı bir mühendisin kaleminden: Basit hayat, yoğun anlamlar.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Hacer Talak</h3>
+            <p class="stream-bio">Psikoloji | Edebiyat | Felsefe | Eğitim</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Ferhat Sercan</h3>
+            <p class="stream-bio">Bildiklerimi, yaşadıklarımı ve öğrendiklerimi paylaşıyorum. Neverfap Akademi Ex-Team Lead YetGen23'2 #üretkenlik #productivity https://linktr.ee/ferhatsercan</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Hatice Nur Özcan</h3>
+            <p class="stream-bio">Ama gözler kör, yüreği ile bakmalı insan.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Bahadır Özerdem</h3>
+            <p class="stream-bio">Gerçek bilinir hakikat ise aranır.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Melisa Tekkıran</h3>
+            <p class="stream-bio">Her şey ben yaşarken oldu, bunu bilsin insanlar ben yaşarken koptu tufan ben yaşarken yeni baştan yaratıldı kainat her şeyi gördüm içim rahat.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Gonca Menteşe</h3>
+            <p class="stream-bio">Yazmak yeniden bakmaktır hayata... İletişim kurmak isterseniz: goncamentese@hotmail.com instagram: gonca.mentese</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Erol Seçilmiş</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Furkan Keçeli</h3>
+            <p class="stream-bio">Hayatın Derinliklerine Dalın (Dive into Life's Depths…)</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Beril Bingöllü</h3>
+            <p class="stream-bio">kendi iç sesimi yazıya döküyorum; belki senin sustuklarını da anlatıyordur.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Betül Aşık Işık</h3>
+            <p class="stream-bio">Psychotherapist | I write about what I see, read and listen to. Big fan of existential philosophy. https://www.instagram.com/psk.dan.betulasik/</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Nihan Aslan</h3>
+            <p class="stream-bio">Okur, yazmaya çalışır.. İnstagram/ @nihinkitapdunyasi</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Aleyna</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Gizem Algac</h3>
+            <p class="stream-bio">İlişkiler, gözlem, içsel keşif ve dijital dönüşüm: Hayatın yazıya dökülen halleri. 🌸</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Yuled Sancaktutar</h3>
+            <p class="stream-bio">Substack: https://yuledsancaktutar.substack.com Youtube: https://www.youtube.com/@BirYankı</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Pınar Akkan</h3>
+            <p class="stream-bio">English Teacher in Love with Writing🤍</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Kardelen</h3>
+            <p class="stream-bio">yazıyorum çünkü bazı şeyler anlatıldıkça hafifliyor. içten düşünceler, ilişkiler, sevgi, iyileşme ve hayat üzerine notlar.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Omer Ali Bas</h3>
+            <p class="stream-bio">amatör karalamalar.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Mürşide</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Esra Kuru</h3>
+            <p class="stream-bio">Violinist | Activist | Human Rights Defender - Colors are my second language.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Fatma Çavuş</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">biyeregitsek</h3>
+            <p class="stream-bio">Seyahat Blog | Istanbul, Türkiye 🇹🇷 | Dünya🌍 | Seyahat | Farklı Lezzetler | Tasarım ve Mimari ✍🏻 medium.com/biyeregitsek 📧 biyeregitsek@gmail.com</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Deniz</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Bengu Kisa</h3>
+            <p class="stream-bio">Toplumsal dinamikler ve kültürel dokular üzerine eleştirel analizler. Sosyolog</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Tuba Çerçi</h3>
+            
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">Nuri Sencer</h3>
+            <p class="stream-bio">Zamanın dar geldiği çağda, kelimelerle nefes alıyor. Yazdıklarım susamadığım için, bazen de unutmamak için. Her satırda kendimi arıyor, biraz da seni buluyorum.</p>
+          </article>
+          <article class="stream-card">
+            <h3 class="stream-name">İnci Çilsal</h3>
+            <p class="stream-bio">Hayata dair gördüklerim ve hissettiklerim şiirlerle yazılarla belki sana da dokunur, kim bilir ✨ Yazarak ve çizerek nefes alan bir amatör. — İnci Çilsal.</p>
+          </article>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
 </body>
 </html>
